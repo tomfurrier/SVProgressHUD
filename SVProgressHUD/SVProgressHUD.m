@@ -32,6 +32,7 @@ static UIImage *SVProgressHUDErrorImage;
 static const CGFloat SVProgressHUDRingRadius = 18;
 static const CGFloat SVProgressHUDRingNoTextRadius = 24;
 static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
+static const CGFloat kDefaultStatusTextConstraintWidth = 200;
 
 @interface SVProgressHUD ()
 
@@ -52,7 +53,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
 
 @property (nonatomic, readonly) CGFloat visibleKeyboardHeight;
 @property (nonatomic, assign) UIOffset offsetFromCenter;
-
+@property (nonatomic, assign) CGFloat statusTextConstraintWidth;
 
 - (void)showProgress:(float)progress
               status:(NSString*)string
@@ -192,6 +193,17 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     [self setOffsetFromCenter:UIOffsetZero];
 }
 
+
+#pragma mark Customization
+
++ (void)setStatusTextConstraintWidth:(CGFloat)textConstraintWidth {
+    [[self sharedView] setStatusTextConstraintWidth:textConstraintWidth];
+}
+
++ (void)resetStatusTextConstraintWidth {
+    [[self sharedView ] setStatusTextConstraintWidth:kDefaultStatusTextConstraintWidth];
+}
+
 #pragma mark - Instance Methods
 
 - (id)initWithFrame:(CGRect)frame {
@@ -220,6 +232,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
           SVProgressHUDErrorImage = [UIImage imageNamed:@"SVProgressHUD.bundle/error"];
         }
         SVProgressHUDRingThickness = 4;
+        _statusTextConstraintWidth = kDefaultStatusTextConstraintWidth;
     }
 	
     return self;
@@ -274,7 +287,7 @@ static const CGFloat SVProgressHUDParallaxDepthPoints = 10;
     BOOL imageUsed = (self.imageView.image) || (self.imageView.hidden);
     
     if(string) {
-        CGSize constraintSize = CGSizeMake(200, 300);
+        CGSize constraintSize = CGSizeMake(self.statusTextConstraintWidth, 300);
         CGRect stringRect;
         if ([string respondsToSelector:@selector(boundingRectWithSize:options:attributes:context:)]) {
           stringRect = [string boundingRectWithSize:constraintSize

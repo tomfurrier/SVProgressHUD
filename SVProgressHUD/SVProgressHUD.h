@@ -38,6 +38,10 @@ typedef NSUInteger SVProgressHUDMaskType;
 + (void)setSuccessImage:(UIImage*)image; // default is bundled success image from Glyphish
 + (void)setErrorImage:(UIImage*)image; // default is bundled error image from Glyphish
 
+/*! Change how wide the text can be */
++ (void)setStatusTextConstraintWidth:(CGFloat)textConstraintWidth;
++ (void)resetStatusTextConstraintWidth;
+
 #pragma mark - Show Methods
 
 + (void)show;
